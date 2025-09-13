@@ -28,3 +28,4 @@ C:\Users\xyryl\source\repos\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\MoodP
 C:\Users\xyryl\source\repos\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\MoodPlaylist.SQLite.Services\obj\Debug\net8.0\refint\MoodPlaylist.SQLite.Services.dll
 C:\Users\xyryl\source\repos\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\MoodPlaylist.SQLite.Services\obj\Debug\net8.0\MoodPlaylist.SQLite.Services.pdb
 C:\Users\xyryl\source\repos\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\MoodPlaylist.SQLite.Services\obj\Debug\net8.0\ref\MoodPlaylist.SQLite.Services.dll
+C:\Users\xyryl\source\repos\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\MoodPlaylist.SQLite.Services\obj\Debug\net8.0\MoodPlaylist.SQLite.Services.sourcelink.json

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodPlaylist.SQLite.Reposit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodPlaylist.SQLite.Services", "MoodPlaylist.SQLite.Services\MoodPlaylist.SQLite.Services.csproj", "{FE9A0F29-A2DE-B23B-7B3E-A03E6F4F7580}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodPlaylistGenerator", "PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Claire\MoodPlaylistGenerator.csproj", "{5EC83F6E-FD00-23D6-31B9-AF1FBB12C10F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodPlaylistGenerator", "MoodPlaylist.Generator\MoodPlaylistGenerator.csproj", "{8FB7AD81-CF83-D3DB-D664-B623F0C45A89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{FE9A0F29-A2DE-B23B-7B3E-A03E6F4F7580}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE9A0F29-A2DE-B23B-7B3E-A03E6F4F7580}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE9A0F29-A2DE-B23B-7B3E-A03E6F4F7580}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5EC83F6E-FD00-23D6-31B9-AF1FBB12C10F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5EC83F6E-FD00-23D6-31B9-AF1FBB12C10F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5EC83F6E-FD00-23D6-31B9-AF1FBB12C10F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5EC83F6E-FD00-23D6-31B9-AF1FBB12C10F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FB7AD81-CF83-D3DB-D664-B623F0C45A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FB7AD81-CF83-D3DB-D664-B623F0C45A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FB7AD81-CF83-D3DB-D664-B623F0C45A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FB7AD81-CF83-D3DB-D664-B623F0C45A89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
