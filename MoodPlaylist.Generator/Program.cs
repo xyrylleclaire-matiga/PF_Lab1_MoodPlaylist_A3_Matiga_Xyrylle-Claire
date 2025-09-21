@@ -9,6 +9,7 @@ using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container
 builder.Services.AddControllersWithViews();
 
 // Force DB path to project root so migrations and runtime use same file
@@ -18,11 +19,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite($"Data Source={dbPath}")
 );
 
+// Register application services
 builder.Services.AddScoped<SongService>();
 builder.Services.AddScoped<PlaylistService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ILocalMediaService, LocalMediaService>();
 
+// Configure authentication
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
     {
@@ -33,6 +36,14 @@ builder.Services.AddAuthentication("Cookies")
 
 var app = builder.Build();
 
+// Ensure the uploads folder exists
+var uploadsPath = Path.Combine(builder.Environment.WebRootPath, "uploads");
+if (!Directory.Exists(uploadsPath))
+{
+    Directory.CreateDirectory(uploadsPath);
+}
+
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -40,7 +51,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(); // Serve wwwroot static files
 
 app.UseRouting();
 

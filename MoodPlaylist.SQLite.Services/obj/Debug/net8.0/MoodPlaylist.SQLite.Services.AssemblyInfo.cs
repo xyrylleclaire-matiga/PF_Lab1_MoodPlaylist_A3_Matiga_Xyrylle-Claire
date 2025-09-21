@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MoodPlaylist.SQLite.Services")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+20ed823becc455e5c3ec1e738eaaeb3f74877e71")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3622459a518750b20104a15034dce527df1d3962")]
 [assembly: System.Reflection.AssemblyProductAttribute("MoodPlaylist.SQLite.Services")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MoodPlaylist.SQLite.Services")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

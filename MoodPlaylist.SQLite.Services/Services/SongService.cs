@@ -1,6 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoodPlaylist.SQLite.Data;
 using MoodPlaylist.SQLite.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MoodPlaylistGenerator.Services
 {
@@ -13,6 +17,7 @@ namespace MoodPlaylistGenerator.Services
             _context = context;
         }
 
+        // Get all songs for a user
         public async Task<List<Song>> GetUserSongsAsync(int userId)
         {
             return await _context.Songs
@@ -23,6 +28,7 @@ namespace MoodPlaylistGenerator.Services
                 .ToListAsync();
         }
 
+        // Get single song by ID
         public async Task<Song?> GetSongByIdAsync(int songId, int userId)
         {
             return await _context.Songs
@@ -31,7 +37,7 @@ namespace MoodPlaylistGenerator.Services
                 .FirstOrDefaultAsync(s => s.Id == songId && s.UserId == userId);
         }
 
-        // ✅ Now supports LocalFilePath + YouTubeUrl
+        // Create new song with optional file upload or YouTube URL
         public async Task<Song> CreateSongAsync(
             string title,
             string artist,
@@ -40,6 +46,12 @@ namespace MoodPlaylistGenerator.Services
             int userId,
             List<int> moodIds)
         {
+            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(artist))
+                throw new ArgumentException("Title and Artist are required.");
+
+            if (string.IsNullOrWhiteSpace(youtubeUrl) && string.IsNullOrWhiteSpace(localFilePath))
+                throw new ArgumentException("Provide either a YouTube URL or upload a file.");
+
             var song = new Song
             {
                 Title = title,
@@ -53,7 +65,7 @@ namespace MoodPlaylistGenerator.Services
             _context.Songs.Add(song);
             await _context.SaveChangesAsync();
 
-            // Add mood associations
+            // Save mood associations
             if (moodIds.Any())
             {
                 foreach (var moodId in moodIds)
@@ -70,6 +82,7 @@ namespace MoodPlaylistGenerator.Services
             return await GetSongByIdAsync(song.Id, userId) ?? song;
         }
 
+        // Update existing song
         public async Task<Song?> UpdateSongAsync(
             int songId,
             int userId,
@@ -83,50 +96,53 @@ namespace MoodPlaylistGenerator.Services
                 .Include(s => s.SongMoods)
                 .FirstOrDefaultAsync(s => s.Id == songId && s.UserId == userId);
 
-            if (song == null)
-                return null;
+            if (song == null) return null;
 
-            // Update song properties
             song.Title = title;
             song.Artist = artist;
             song.YouTubeUrl = youtubeUrl ?? string.Empty;
             song.LocalFilePath = localFilePath;
 
-            // Remove existing mood associations
+            // Clear old moods
             _context.SongMoods.RemoveRange(song.SongMoods);
 
-            // Add new mood associations
-            foreach (var moodId in moodIds)
+            // Add new moods
+            if (moodIds != null && moodIds.Any())
             {
-                song.SongMoods.Add(new SongMood
+                foreach (var moodId in moodIds)
                 {
-                    SongId = song.Id,
-                    MoodId = moodId
-                });
+                    _context.SongMoods.Add(new SongMood
+                    {
+                        SongId = song.Id,
+                        MoodId = moodId
+                    });
+                }
             }
 
             await _context.SaveChangesAsync();
-            return await GetSongByIdAsync(songId, userId);
+            return await GetSongByIdAsync(song.Id, userId);
         }
 
+        // Delete a song
         public async Task<bool> DeleteSongAsync(int songId, int userId)
         {
             var song = await _context.Songs
                 .FirstOrDefaultAsync(s => s.Id == songId && s.UserId == userId);
 
-            if (song == null)
-                return false;
+            if (song == null) return false;
 
             _context.Songs.Remove(song);
             await _context.SaveChangesAsync();
             return true;
         }
 
+        // Get all moods
         public async Task<List<Mood>> GetAllMoodsAsync()
         {
             return await _context.Moods.OrderBy(m => m.Name).ToListAsync();
         }
 
+        // Get songs by mood
         public async Task<List<Song>> GetSongsByMoodAsync(int moodId, int userId)
         {
             return await _context.Songs
@@ -137,22 +153,27 @@ namespace MoodPlaylistGenerator.Services
                 .ToListAsync();
         }
 
+        // Extract YouTube video ID from URL
         public string ExtractYouTubeVideoId(string url)
         {
-            if (string.IsNullOrWhiteSpace(url))
-                return "";
+            if (string.IsNullOrWhiteSpace(url)) return "";
 
-            var uri = new Uri(url);
-
-            if (uri.Host.Contains("youtu.be"))
+            try
             {
-                return uri.AbsolutePath.TrimStart('/');
+                var uri = new Uri(url);
+
+                if (uri.Host.Contains("youtu.be"))
+                    return uri.AbsolutePath.TrimStart('/');
+
+                if (uri.Host.Contains("youtube.com"))
+                {
+                    var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+                    return query["v"] ?? "";
+                }
             }
-
-            if (uri.Host.Contains("youtube.com"))
+            catch
             {
-                var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
-                return query["v"] ?? "";
+                return "";
             }
 
             return "";

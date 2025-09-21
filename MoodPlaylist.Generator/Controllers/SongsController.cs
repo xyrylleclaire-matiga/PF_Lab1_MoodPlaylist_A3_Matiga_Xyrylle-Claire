@@ -7,6 +7,9 @@ using MoodPlaylistGenerator.Services;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace MoodPlaylistGenerator.Controllers
 {
@@ -34,6 +37,7 @@ namespace MoodPlaylistGenerator.Controllers
             int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
 
         // ====================== INDEX ======================
+        [HttpGet]
         public async Task<IActionResult> Index(int? moodId, string? search)
         {
             var userId = GetCurrentUserId();
@@ -57,6 +61,7 @@ namespace MoodPlaylistGenerator.Controllers
         }
 
         // ====================== DETAILS ======================
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var userId = GetCurrentUserId();
@@ -80,7 +85,10 @@ namespace MoodPlaylistGenerator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Song model, IFormFile? mediaFile, List<int>? selectedMoodIds)
+        public async Task<IActionResult> Create(
+            Song model, // <-- FIXED: removed [Bind(...)]
+            IFormFile? mediaFile,
+            List<int>? selectedMoodIds)
         {
             if (!ModelState.IsValid)
             {
@@ -90,6 +98,7 @@ namespace MoodPlaylistGenerator.Controllers
 
             var userId = GetCurrentUserId();
             string? localFilePath = null;
+            string? youTubeUrl = model.YouTubeUrl;
 
             try
             {
@@ -102,9 +111,11 @@ namespace MoodPlaylistGenerator.Controllers
                         ViewBag.AvailableMoods = await _songService.GetAllMoodsAsync();
                         return View(model);
                     }
+                    // If a file is uploaded, we clear the YouTubeUrl to avoid ambiguity
+                    youTubeUrl = null;
                 }
 
-                if (string.IsNullOrWhiteSpace(model.YouTubeUrl) && string.IsNullOrWhiteSpace(localFilePath))
+                if (string.IsNullOrWhiteSpace(youTubeUrl) && string.IsNullOrWhiteSpace(localFilePath))
                 {
                     ModelState.AddModelError("", "Please provide either a YouTube URL or upload a file.");
                     ViewBag.AvailableMoods = await _songService.GetAllMoodsAsync();
@@ -116,7 +127,7 @@ namespace MoodPlaylistGenerator.Controllers
                 await _songService.CreateSongAsync(
                     model.Title,
                     model.Artist,
-                    string.IsNullOrWhiteSpace(localFilePath) ? model.YouTubeUrl : null,
+                    youTubeUrl,
                     localFilePath,
                     userId,
                     selectedMoodIds
@@ -148,7 +159,10 @@ namespace MoodPlaylistGenerator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Song model, IFormFile? mediaFile, List<int>? selectedMoodIds)
+        public async Task<IActionResult> Edit(
+            [Bind("Id,Title,Artist,YouTubeUrl,LocalFilePath")] Song model,
+            IFormFile? mediaFile,
+            List<int>? selectedMoodIds)
         {
             if (!ModelState.IsValid)
             {
@@ -158,13 +172,21 @@ namespace MoodPlaylistGenerator.Controllers
 
             var userId = GetCurrentUserId();
             string? localFilePath = model.LocalFilePath;
+            string? youTubeUrl = model.YouTubeUrl;
 
             try
             {
                 if (mediaFile != null && mediaFile.Length > 0)
+                {
                     localFilePath = await _localMediaService.SaveFileAsync(mediaFile);
+                    youTubeUrl = null;
+                }
+                else if (!string.IsNullOrWhiteSpace(youTubeUrl))
+                {
+                    localFilePath = null;
+                }
 
-                if (string.IsNullOrWhiteSpace(localFilePath) && string.IsNullOrWhiteSpace(model.YouTubeUrl))
+                if (string.IsNullOrWhiteSpace(youTubeUrl) && string.IsNullOrWhiteSpace(localFilePath))
                 {
                     ModelState.AddModelError("", "Please provide either a YouTube URL or upload a file.");
                     ViewBag.AvailableMoods = await _songService.GetAllMoodsAsync();
@@ -178,7 +200,7 @@ namespace MoodPlaylistGenerator.Controllers
                     userId,
                     model.Title,
                     model.Artist,
-                    string.IsNullOrWhiteSpace(localFilePath) ? model.YouTubeUrl : null,
+                    youTubeUrl,
                     localFilePath,
                     selectedMoodIds
                 );
@@ -212,6 +234,7 @@ namespace MoodPlaylistGenerator.Controllers
         }
 
         // ====================== PLAY LOCAL ======================
+        [HttpGet]
         public IActionResult PlayLocal(string filePath)
         {
             var safeFileName = Path.GetFileName(filePath);
