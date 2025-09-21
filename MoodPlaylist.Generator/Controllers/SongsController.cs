@@ -33,6 +33,7 @@ namespace MoodPlaylistGenerator.Controllers
         private int GetCurrentUserId() =>
             int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
 
+        // ====================== INDEX ======================
         public async Task<IActionResult> Index(int? moodId, string? search)
         {
             var userId = GetCurrentUserId();
@@ -52,9 +53,10 @@ namespace MoodPlaylistGenerator.Controllers
             ViewBag.SelectedMoodId = moodId;
             ViewBag.SearchTerm = search ?? "";
 
-            return View(songs); // just pass list of songs
+            return View(songs);
         }
 
+        // ====================== DETAILS ======================
         public async Task<IActionResult> Details(int id)
         {
             var userId = GetCurrentUserId();
@@ -68,6 +70,7 @@ namespace MoodPlaylistGenerator.Controllers
             return View(song);
         }
 
+        // ====================== CREATE ======================
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -76,6 +79,7 @@ namespace MoodPlaylistGenerator.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Song model, IFormFile? mediaFile, List<int>? selectedMoodIds)
         {
             if (!ModelState.IsValid)
@@ -87,25 +91,35 @@ namespace MoodPlaylistGenerator.Controllers
             var userId = GetCurrentUserId();
             string? localFilePath = null;
 
-            if (mediaFile is { Length: > 0 })
-                localFilePath = await _localMediaService.SaveFileAsync(mediaFile);
-
-            if (string.IsNullOrWhiteSpace(localFilePath) && string.IsNullOrWhiteSpace(model.YouTubeUrl))
-            {
-                ModelState.AddModelError("", "Please provide either a YouTube URL or upload a file.");
-                ViewBag.AvailableMoods = await _songService.GetAllMoodsAsync();
-                return View(model);
-            }
-
             try
             {
+                if (mediaFile != null && mediaFile.Length > 0)
+                {
+                    localFilePath = await _localMediaService.SaveFileAsync(mediaFile);
+                    if (string.IsNullOrWhiteSpace(localFilePath))
+                    {
+                        ModelState.AddModelError("", "Failed to save uploaded file.");
+                        ViewBag.AvailableMoods = await _songService.GetAllMoodsAsync();
+                        return View(model);
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(model.YouTubeUrl) && string.IsNullOrWhiteSpace(localFilePath))
+                {
+                    ModelState.AddModelError("", "Please provide either a YouTube URL or upload a file.");
+                    ViewBag.AvailableMoods = await _songService.GetAllMoodsAsync();
+                    return View(model);
+                }
+
+                selectedMoodIds ??= new List<int>();
+
                 await _songService.CreateSongAsync(
                     model.Title,
                     model.Artist,
                     string.IsNullOrWhiteSpace(localFilePath) ? model.YouTubeUrl : null,
                     localFilePath,
                     userId,
-                    selectedMoodIds ?? new List<int>()
+                    selectedMoodIds
                 );
 
                 TempData["SuccessMessage"] = "Song added successfully!";
@@ -114,18 +128,18 @@ namespace MoodPlaylistGenerator.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error adding song");
-                ModelState.AddModelError("", "An error occurred while adding the song.");
+                ModelState.AddModelError("", "An error occurred while adding the song. Check logs.");
                 ViewBag.AvailableMoods = await _songService.GetAllMoodsAsync();
                 return View(model);
             }
         }
 
+        // ====================== EDIT ======================
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var userId = GetCurrentUserId();
             var song = await _songService.GetSongByIdAsync(id, userId);
-
             if (song == null) return NotFound();
 
             ViewBag.AvailableMoods = await _songService.GetAllMoodsAsync();
@@ -133,6 +147,7 @@ namespace MoodPlaylistGenerator.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Song model, IFormFile? mediaFile, List<int>? selectedMoodIds)
         {
             if (!ModelState.IsValid)
@@ -144,18 +159,20 @@ namespace MoodPlaylistGenerator.Controllers
             var userId = GetCurrentUserId();
             string? localFilePath = model.LocalFilePath;
 
-            if (mediaFile is { Length: > 0 })
-                localFilePath = await _localMediaService.SaveFileAsync(mediaFile);
-
-            if (string.IsNullOrWhiteSpace(localFilePath) && string.IsNullOrWhiteSpace(model.YouTubeUrl))
-            {
-                ModelState.AddModelError("", "Please provide either a YouTube URL or upload a file.");
-                ViewBag.AvailableMoods = await _songService.GetAllMoodsAsync();
-                return View(model);
-            }
-
             try
             {
+                if (mediaFile != null && mediaFile.Length > 0)
+                    localFilePath = await _localMediaService.SaveFileAsync(mediaFile);
+
+                if (string.IsNullOrWhiteSpace(localFilePath) && string.IsNullOrWhiteSpace(model.YouTubeUrl))
+                {
+                    ModelState.AddModelError("", "Please provide either a YouTube URL or upload a file.");
+                    ViewBag.AvailableMoods = await _songService.GetAllMoodsAsync();
+                    return View(model);
+                }
+
+                selectedMoodIds ??= new List<int>();
+
                 var updatedSong = await _songService.UpdateSongAsync(
                     model.Id,
                     userId,
@@ -163,7 +180,7 @@ namespace MoodPlaylistGenerator.Controllers
                     model.Artist,
                     string.IsNullOrWhiteSpace(localFilePath) ? model.YouTubeUrl : null,
                     localFilePath,
-                    selectedMoodIds ?? new List<int>()
+                    selectedMoodIds
                 );
 
                 if (updatedSong == null) return NotFound();
@@ -180,7 +197,9 @@ namespace MoodPlaylistGenerator.Controllers
             }
         }
 
+        // ====================== DELETE ======================
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             var userId = GetCurrentUserId();
@@ -192,6 +211,7 @@ namespace MoodPlaylistGenerator.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // ====================== PLAY LOCAL ======================
         public IActionResult PlayLocal(string filePath)
         {
             var safeFileName = Path.GetFileName(filePath);
