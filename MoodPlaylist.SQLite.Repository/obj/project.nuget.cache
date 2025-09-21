@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Ygdn3/kRK5g=",
+  "dgSpecHash": "HEw1jZrjPQI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj",
+  "projectFilePath": "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\xyryl\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.9\\microsoft.entityframeworkcore.9.0.9.nupkg.sha512",
     "C:\\Users\\xyryl\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.9\\microsoft.entityframeworkcore.abstractions.9.0.9.nupkg.sha512",

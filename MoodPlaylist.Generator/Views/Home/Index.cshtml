@@ -2,12 +2,12 @@
     ViewData["Title"] = "Mood Playlist Generator";
 }
 
-<div class="text-center">
-    <h1 class="display-4">🎵 Mood Playlist Generator</h1>
-    <p class="lead">Create personalized YouTube playlists based on your mood</p>
-    
-    @if (!User.Identity!.IsAuthenticated)
-    {
+@if (!User.Identity!.IsAuthenticated)
+{
+    <div class="text-center">
+        <h1 class="display-4">🎵 Mood Playlist Generator</h1>
+        <p class="lead">Create personalized YouTube playlists based on your mood</p>
+
         <div class="row justify-content-center mt-4">
             <div class="col-md-8">
                 <div class="card">
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row mt-5">
             <div class="col-md-4">
                 <div class="card h-100">
@@ -49,5 +49,64 @@
                 </div>
             </div>
         </div>
-    }
-</div>
+    </div>
+}
+else
+{
+    <div class="p-6 bg-white rounded-xl shadow-lg border border-gray-200">
+        <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">Media Player</h1>
+        <p class="text-center text-gray-600 mb-8">Mag-upload ng audio o video file mula sa iyong device.</p>
+
+        @if (!string.IsNullOrEmpty(ViewBag.MediaUrl))
+        {
+            if (ViewBag.IsLocal)
+            {
+                string fileExtension = System.IO.Path.GetExtension(ViewBag.MediaUrl).ToLower();
+                if (fileExtension == ".mp4" || fileExtension == ".webm" || fileExtension == ".ogg")
+                {
+                    <video class="w-full max-w-2xl mx-auto rounded-lg shadow-xl" controls>
+                        <source src="@ViewBag.MediaUrl" type="video/@fileExtension.Substring(1)">
+                        Your browser does not support the video tag.
+                    </video>
+                }
+                else if (fileExtension == ".mp3" || fileExtension == ".wav" || fileExtension == ".ogg")
+                {
+                    <audio class="w-full max-w-xl mx-auto rounded-lg shadow-xl" controls>
+                        <source src="@ViewBag.MediaUrl" type="audio/@fileExtension.Substring(1)">
+                        Your browser does not support the audio element.
+                    </audio>
+                }
+            }
+            else
+            {
+                <div class="relative w-full pb-[56.25%] overflow-hidden rounded-lg shadow-xl">
+                    <iframe class="absolute top-0 left-0 w-full h-full"
+                                          src="@ViewBag.MediaUrl"
+                                          frameborder="0"
+                                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                          allowfullscreen></iframe>
+                </div>
+            }
+        }
+
+        <div class="mt-8">
+            <h2 class="text-2xl font-bold mb-4 text-center">Mag-upload ng Media</h2>
+            <form asp-controller="Home" asp-action="UploadMedia" method="post" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="mediaFile" class="block text-gray-700 font-medium mb-2">Pumili ng Audio/Video File:</label>
+                    <input type="file" name="mediaFile" id="mediaFile" accept="video/*,audio/*" class="w-full text-sm text-gray-500
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-blue-50 file:text-blue-700
+                            hover:file:bg-blue-100" />
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-md">
+                        I-upload at I-play
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+}

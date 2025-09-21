@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Services\\MoodPlaylist.SQLite.Services.csproj": {}
+    "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Services\\MoodPlaylist.SQLite.Services.csproj": {}
   },
   "projects": {
-    "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj": {
+    "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj",
+        "projectUniqueName": "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj",
         "projectName": "MoodPlaylist.SQLite.Repository",
-        "projectPath": "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj",
+        "projectPath": "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj",
         "packagesPath": "C:\\Users\\xyryl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\obj\\",
+        "outputPath": "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -75,14 +75,14 @@
         }
       }
     },
-    "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Services\\MoodPlaylist.SQLite.Services.csproj": {
+    "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Services\\MoodPlaylist.SQLite.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Services\\MoodPlaylist.SQLite.Services.csproj",
+        "projectUniqueName": "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Services\\MoodPlaylist.SQLite.Services.csproj",
         "projectName": "MoodPlaylist.SQLite.Services",
-        "projectPath": "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Services\\MoodPlaylist.SQLite.Services.csproj",
+        "projectPath": "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Services\\MoodPlaylist.SQLite.Services.csproj",
         "packagesPath": "C:\\Users\\xyryl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Services\\obj\\",
+        "outputPath": "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Services\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -103,8 +103,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj": {
-                "projectPath": "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj"
+              "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj": {
+                "projectPath": "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj"
               }
             }
           }
@@ -129,6 +129,10 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "Microsoft.AspNetCore.Hosting": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.9, )"
@@ -146,6 +150,9 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

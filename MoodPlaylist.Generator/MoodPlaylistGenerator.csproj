@@ -20,4 +20,8 @@
     <ProjectReference Include="..\MoodPlaylist.SQLite.Services\MoodPlaylist.SQLite.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>

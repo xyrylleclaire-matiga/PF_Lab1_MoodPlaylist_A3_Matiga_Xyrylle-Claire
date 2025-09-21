@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MoodPlaylist.SQLite.Data;
 using MoodPlaylist.SQLite.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using MoodPlaylistGenerator.Services;
+// Gamitin ang using alias para tukuyin kung saang namespace nanggagaling ang services
+using ServiceReferences = MoodPlaylist.SQLite.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +16,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=MoodPlaylist.db"));
 
 // Add services
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<SongService>();
-builder.Services.AddScoped<PlaylistService>();
+builder.Services.AddScoped<IAuthService, ServiceReferences.AuthService>(); // Pinalitan
+builder.Services.AddScoped<ServiceReferences.SongService>();
+builder.Services.AddScoped<ServiceReferences.PlaylistService>();
+builder.Services.AddScoped<ILocalMediaService, LocalMediaService>();
 
 // Add authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -39,11 +43,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj": {}
+    "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj": {}
   },
   "projects": {
-    "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj": {
+    "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj",
+        "projectUniqueName": "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj",
         "projectName": "MoodPlaylist.SQLite.Repository",
-        "projectPath": "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj",
+        "projectPath": "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\MoodPlaylist.SQLite.Repository.csproj",
         "packagesPath": "C:\\Users\\xyryl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\xyryl\\source\\repos\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\obj\\",
+        "outputPath": "C:\\Users\\xyryl\\source\\repos\\IT Elective\\PF_Lab1_MoodPlaylist_A3_Matiga_Xyrylle-Clairee\\MoodPlaylist.SQLite.Repository\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
