@@ -1,13 +1,11 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using MoodPlaylistGenerator.Models;
 using MoodPlaylistGenerator.ViewModels;
-using Microsoft.Extensions.Configuration;
-using MoodPlaylistGenerator.Services;
+using MoodPlaylistGenerator.Services; // ✅ Correct namespace for services
 using System.IO;
-using MoodPlaylist.SQLite.Services;
-using ServiceReferences = MoodPlaylist.SQLite.Services;
 
 namespace MoodPlaylistGenerator.Controllers
 {
@@ -16,15 +14,15 @@ namespace MoodPlaylistGenerator.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
         private readonly ILocalMediaService _localMediaService;
-        private readonly ServiceReferences.SongService? _songService;
-        private readonly ServiceReferences.PlaylistService? _playlistService;
+        private readonly SongService _songService;
+        private readonly PlaylistService _playlistService;
 
         public HomeController(
             ILogger<HomeController> logger,
             IConfiguration configuration,
             ILocalMediaService localMediaService,
-            ServiceReferences.SongService? songService = null,
-            ServiceReferences.PlaylistService? playlistService = null)
+            SongService songService,
+            PlaylistService playlistService)
         {
             _logger = logger;
             _configuration = configuration;
@@ -35,7 +33,7 @@ namespace MoodPlaylistGenerator.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (User.Identity?.IsAuthenticated == true && _songService != null && _playlistService != null)
+            if (User.Identity?.IsAuthenticated == true)
             {
                 var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
                 var allSongs = await _songService.GetUserSongsAsync(userId);

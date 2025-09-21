@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using MoodPlaylistGenerator.Services;  // ✅ This is where SongService and PlaylistService live
+using MoodPlaylist.SQLite.Data;        // ✅ Keep this for ApplicationDbContext
 using MoodPlaylist.SQLite.Services;
-using MoodPlaylist.SQLite.Data;
 
 namespace MoodPlaylistGenerator.Controllers
 {
@@ -28,7 +29,8 @@ namespace MoodPlaylistGenerator.Controllers
         [HttpGet("status")]
         public IActionResult Status()
         {
-            return Ok(new { 
+            return Ok(new
+            {
                 message = "Backend is running!",
                 database = "Connected",
                 timestamp = DateTime.Now
@@ -59,7 +61,8 @@ namespace MoodPlaylistGenerator.Controllers
                 {
                     return BadRequest(new { error = "User already exists" });
                 }
-                return Ok(new { 
+                return Ok(new
+                {
                     message = "Test user created successfully",
                     userId = user.Id,
                     email = user.Email,
@@ -88,16 +91,18 @@ namespace MoodPlaylistGenerator.Controllers
                     }
                 }
 
-                // Create test song with Happy mood (ID = 1)
+                // ✅ Pass youtubeUrl, localFilePath (null), userId, and moodIds
                 var song = await _songService.CreateSongAsync(
                     "Test Song",
-                    "Test Artist", 
+                    "Test Artist",
                     "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                    null,                 // localFilePath → wala muna
                     user.Id,
                     new List<int> { 1, 3 } // Happy and Relaxed moods
                 );
 
-                return Ok(new {
+                return Ok(new
+                {
                     message = "Test song created successfully",
                     songId = song.Id,
                     title = song.Title,
@@ -125,13 +130,14 @@ namespace MoodPlaylistGenerator.Controllers
 
                 // Generate playlist for Happy mood (ID = 1)
                 var playlist = await _playlistService.GeneratePlaylistAsync(
-                    user.Id, 
+                    user.Id,
                     1, // Happy mood
-                    5, 
+                    5,
                     "Test Playlist"
                 );
 
-                return Ok(new {
+                return Ok(new
+                {
                     message = "Test playlist created successfully",
                     playlistId = playlist.Id,
                     name = playlist.Name,
@@ -139,7 +145,8 @@ namespace MoodPlaylistGenerator.Controllers
                     songCount = playlist.PlaylistSongs.Count,
                     songs = playlist.PlaylistSongs
                         .OrderBy(ps => ps.Position)
-                        .Select(ps => new { 
+                        .Select(ps => new
+                        {
                             title = ps.Song.Title,
                             artist = ps.Song.Artist,
                             position = ps.Position
@@ -163,7 +170,8 @@ namespace MoodPlaylistGenerator.Controllers
                 var moodCount = _context.Moods.Count();
                 var playlistCount = _context.Playlists.Count();
 
-                return Ok(new {
+                return Ok(new
+                {
                     users = userCount,
                     songs = songCount,
                     moods = moodCount,

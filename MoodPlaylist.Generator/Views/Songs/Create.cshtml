@@ -1,4 +1,4 @@
-@model MoodPlaylistGenerator.ViewModels.CreateSongViewModel
+@model MoodPlaylist.SQLite.Models.Song
 @{
     ViewData["Title"] = "Add New Song";
 }
@@ -10,9 +10,9 @@
                 <h3>🎵 Add New Song</h3>
             </div>
             <div class="card-body">
-                <form asp-action="Create">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                    
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -38,14 +38,20 @@
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="SelectedMoodIds" class="form-label">Select Moods</label>
+                        <label for="mediaFile" class="form-label">Or upload a local file:</label>
+                        <input type="file" id="mediaFile" name="mediaFile" accept="audio/*,video/*" class="form-control" />
+                        <div class="form-text">Supports common audio (mp3, wav) and video (mp4, webm) formats.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Select Moods</label>
                         <div class="row">
-                            @foreach (var mood in Model.AvailableMoods)
+                            @foreach (var mood in ViewBag.AvailableMoods)
                             {
                                 <div class="col-md-4 col-sm-6 mb-2">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" 
-                                               name="SelectedMoodIds" value="@mood.Id" 
+                                        <input class="form-check-input" type="checkbox"
+                                               name="selectedMoodIds" value="@mood.Id"
                                                id="mood_@mood.Id" />
                                         <label class="form-check-label" for="mood_@mood.Id">
                                             <span class="badge rounded-pill me-2" style="background-color: @mood.Color; color: white;">
@@ -57,7 +63,6 @@
                             }
                         </div>
                         <div class="form-text">Select one or more moods that match this song</div>
-                        <span asp-validation-for="SelectedMoodIds" class="text-danger"></span>
                     </div>
 
                     <div class="d-flex justify-content-between">

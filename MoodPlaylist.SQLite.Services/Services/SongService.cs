@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MoodPlaylist.SQLite.Data;
 using MoodPlaylist.SQLite.Models;
-using System.Web;
 
 namespace MoodPlaylistGenerator.Services
 {
@@ -32,13 +31,21 @@ namespace MoodPlaylistGenerator.Services
                 .FirstOrDefaultAsync(s => s.Id == songId && s.UserId == userId);
         }
 
-        public async Task<Song> CreateSongAsync(string title, string artist, string youtubeUrl, int userId, List<int> moodIds)
+        // ✅ Now supports LocalFilePath + YouTubeUrl
+        public async Task<Song> CreateSongAsync(
+            string title,
+            string artist,
+            string? youtubeUrl,
+            string? localFilePath,
+            int userId,
+            List<int> moodIds)
         {
             var song = new Song
             {
                 Title = title,
                 Artist = artist,
-                YouTubeUrl = youtubeUrl,
+                YouTubeUrl = youtubeUrl ?? string.Empty,
+                LocalFilePath = localFilePath,
                 UserId = userId,
                 CreatedAt = DateTime.UtcNow
             };
@@ -63,7 +70,14 @@ namespace MoodPlaylistGenerator.Services
             return await GetSongByIdAsync(song.Id, userId) ?? song;
         }
 
-        public async Task<Song?> UpdateSongAsync(int songId, int userId, string title, string artist, string youtubeUrl, List<int> moodIds)
+        public async Task<Song?> UpdateSongAsync(
+            int songId,
+            int userId,
+            string title,
+            string artist,
+            string? youtubeUrl,
+            string? localFilePath,
+            List<int> moodIds)
         {
             var song = await _context.Songs
                 .Include(s => s.SongMoods)
@@ -75,7 +89,8 @@ namespace MoodPlaylistGenerator.Services
             // Update song properties
             song.Title = title;
             song.Artist = artist;
-            song.YouTubeUrl = youtubeUrl;
+            song.YouTubeUrl = youtubeUrl ?? string.Empty;
+            song.LocalFilePath = localFilePath;
 
             // Remove existing mood associations
             _context.SongMoods.RemoveRange(song.SongMoods);
@@ -124,14 +139,16 @@ namespace MoodPlaylistGenerator.Services
 
         public string ExtractYouTubeVideoId(string url)
         {
-            // Extract video ID from various YouTube URL formats
+            if (string.IsNullOrWhiteSpace(url))
+                return "";
+
             var uri = new Uri(url);
-            
+
             if (uri.Host.Contains("youtu.be"))
             {
                 return uri.AbsolutePath.TrimStart('/');
             }
-            
+
             if (uri.Host.Contains("youtube.com"))
             {
                 var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
